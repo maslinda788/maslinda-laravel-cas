@@ -13,7 +13,7 @@ class RedirectCASAuthenticated
     public function __construct(Guard $auth)
     {
         $this->auth = $auth;
-        $this->cas = app('cas');
+        $this->cas = resolve('cas');
     }
 
     /**

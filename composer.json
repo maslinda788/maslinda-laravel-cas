@@ -1,6 +1,6 @@
 {
-  "name": "subfission/cas",
-  "description": "Adds CAS support to Laravel 5.x - 11.x",
+  "name": "maslinda/laravel-cas",
+  "description": "Laravel 12 compatible CAS authentication (based on subfission/cas)",
   "keywords": [
     "CAS",
     "phpCAS",
@@ -11,7 +11,8 @@
     "laravel 8",
     "laravel 9",
     "laravel 10",
-    "laravel 11"
+    "laravel 11",
+    "laravel 12"
   ],
   "license": "MIT",
   "authors": [
@@ -21,14 +22,15 @@
     }
   ],
   "require": {
-    "php": ">=7.2.0",
-    "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+    "php": "^8.3",
+    "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
     "apereo/phpcas": "^1.6",
     "monolog/monolog": "^2.0|^3.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.0|^9.0|^10.0",
-    "pestphp/pest": "^1.21"
+    "pestphp/pest": "^1.21",
+    "orchestra/testbench": "^6.25"
   },
   "autoload": {
     "psr-4": {
@@ -44,6 +46,7 @@
     }
   },
   "minimum-stability": "stable",
+  "prefer-stable": true,
   "extra": {
     "laravel": {
       "providers": [
@@ -54,7 +57,9 @@
       }
     }
   },
-  "require-dev": {
-    "orchestra/testbench": "^6.25"
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
   }
 }

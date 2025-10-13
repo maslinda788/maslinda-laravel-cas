@@ -3,47 +3,45 @@
 namespace Subfission\Cas;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Log\LogManager; // gunakan LogManager, bukan LogFactory
 
 class CasServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
      */
-    protected $defer = false;
+    protected bool $defer = false;
 
     /**
-     * Bootstrap the application events.
-     *
-     * @return void
+     * Bootstrap any application services.
      */
-    public function boot()
+    public function boot(): void
     {
+        // Gunakan tag publish yang jelas untuk Laravel 12
         $this->publishes([
             __DIR__ . '/../../config/config.php' => config_path('cas.php'),
-        ], 'cas');
+        ], 'cas-config');
     }
 
     /**
-     * Register the service provider.
-     *
-     * @return void
+     * Register any application services.
      */
-    public function register()
+    public function register(): void
     {
+        // Merge config supaya setting user override default
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/config.php',
             'cas'
         );
 
-        $this->app->singleton('cas', function () {
+        // Bind singleton 'cas' ke container
+        $this->app->singleton('cas', function ($app) {
             $cas = new CasManager(config('cas'));
 
-            /** @var LogFactory $logger */
-            $logger = resolve(LogFactory::class);
+            /** @var LogManager $logger */
+            $logger = $app->make(LogManager::class);
 
-            $cas->setLogger($logger->make());
+            $cas->setLogger($logger->channel('stack'));
 
             return $cas;
         });
@@ -51,10 +49,8 @@ class CasServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return ['cas'];
     }

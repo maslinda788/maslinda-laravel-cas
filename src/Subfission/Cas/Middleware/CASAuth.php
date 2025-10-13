@@ -4,26 +4,27 @@ namespace Subfission\Cas\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 
 class CASAuth
 {
-    protected $auth;
+    protected Guard $auth;
     protected $cas;
 
     public function __construct(Guard $auth)
     {
         $this->auth = $auth;
-        $this->cas = app('cas');
+        $this->cas = resolve('cas');
     }
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param  Request $request
+     * @param  Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         if ($this->cas->checkAuthentication()) {
             // Store the user credentials in a Laravel managed session
