@@ -42,38 +42,51 @@ This package has been updated to be **fully compatible with Laravel 12’s new s
 
 ```bash
 composer require maslinda788/maslinda-laravel-cas
+```
 
-Option 2 – Using VCS Repository
+### Option 2 – Using VCS Repository
 
-Add this to your composer.json:
+Add this to your `composer.json`:
 
+```json
 "repositories": [
   {
     "type": "vcs",
     "url": "https://github.com/maslinda788/maslinda-laravel-cas"
   }
 ]
+```
 
 Then run:
 
+```bash
 composer require maslinda788/maslinda-laravel-cas:dev-main
+```
 
-Publish config:
+### Publish Configuration
+
+```bash
 php artisan vendor:publish --tag=cas
+```
 
-📁 Laravel 12 Registration
-1. Register Service Provider
+## 📁 Laravel 12 Registration
 
-Add in:
+### 1. Register Service Provider
 
-bootstrap/providers.php
+Add in `bootstrap/providers.php`:
+
+```php
 return [
+    // ... existing providers ...
     Subfission\Cas\CasServiceProvider::class,
 ];
-2. Add Facade Alias (Optional)
+```
 
-In app/Providers/AppServiceProvider.php:
+### 2. Add Facade Alias (Optional)
 
+In `app/Providers/AppServiceProvider.php`:
+
+```php
 use Illuminate\Foundation\AliasLoader;
 
 public function register(): void
@@ -83,16 +96,19 @@ public function register(): void
         $loader->alias('Cas', \Subfission\Cas\Facades\Cas::class);
     });
 }
+```
 
 This allows usage like:
+
+```php
 Cas::authenticate();
+```
 
-⚙️ Configuration
+## ⚙️ Configuration
 
-After publishing config, edit:
-config/cas.php
+After publishing config, edit `config/cas.php`:
 
-Example:
+```php
 return [
     'server' => [
         'host' => 'cas.example.com',
@@ -109,8 +125,11 @@ return [
     'login_url'  => null,
     'logout_url' => null,
 ];
+```
 
-🚀 Example Usage
+## 🚀 Example Usage
+
+```php
 use Cas;
 
 Route::get('/login/cas', function () {
@@ -128,83 +147,61 @@ Route::get('/profile', function () {
 
     return redirect('/login/cas');
 });
+```
 
 
-🔐 Security & Production Notes
+## 🔐 Security & Production Notes
 
-✅ Set APP_ENV=production
+- ✅ Set `APP_ENV=production`
+- ✅ Enable HTTPS
+- ✅ Secure cookie settings in `php.ini`:
+  ```ini
+  session.cookie_secure = On
+  session.cookie_samesite = None
+  ```
+- ✅ Disable debug mode in production
+- ✅ Enable CSRF protection
+- ✅ Protect internal routes with middleware
+- ✅ Use firewall / WAF if available
 
-✅ Enable HTTPS
-
-✅ Secure cookie settings in php.ini:
-session.cookie_secure = On
-session.cookie_samesite = None
-
-✅ Disable debug mode in production
-
-✅ Enable CSRF protection
-
-✅ Protect internal routes with middleware
-
-✅ Use firewall / WAF if available
-
-🧪 Pentest Notes
+## 🧪 Pentest Notes
 
 This fork has been updated with:
 
-Safe session handling
+- ✅ Safe session handling
+- ✅ Compatibility with CSP header
+- ✅ Secure cookies
+- ✅ CSRF protection
+- ✅ Laravel 12 middleware structure
 
-Compatibility with CSP header
+⚠️ **Final security depends on:**
 
-Secure cookies
+- CAS server configuration
+- Proper HTTPS & certificate verification
+- Firewall & infrastructure security
 
-CSRF protection
+## 📝 Changelog
 
-Laravel 12 middleware structure
+### v6.0.0 – Laravel 12 Fork
 
-⚠️ Final security depends on:
+- ✅ Added Laravel 12 compatibility
+- ✅ Updated for PHP 8.3+
+- ✅ Removed Kernel.php dependencies
+- ✅ New bootstrap architecture support
+- ✅ Improved session handling
+- ✅ CSP ready
+- ✅ Tested on CentOS 9
+- ✅ Production & audit-ready
 
-CAS server configuration
+### v5.0.0 (Original)
 
-Proper HTTPS & certificate verification
+- Added Laravel 11 support
+- Added phpCAS log control
+- Refactored internal design
+- Added GitHub Actions for testing
 
-Firewall & infrastructure security
+## 📚 Credits
 
-📝 Changelog
-v6.0.0 – Laravel 12 Fork
-
-✅ Added Laravel 12 compatibility
-
-✅ Updated for PHP 8.3+
-
-✅ Removed Kernel.php dependencies
-
-✅ New bootstrap architecture support
-
-✅ Improved session handling
-
-✅ CSP ready
-
-✅ Tested on CentOS 9
-
-✅ Production & audit-ready
-
-v5.0.0 (Original)
-
-Added Laravel 11 support
-
-Added phpCAS log control
-
-Refactored internal design
-
-Added GitHub Actions for testing
-
-📚 Credits
-
-Original project:
-https://github.com/subfission/cas
-
-phpCAS:
-https://www.apereo.org/projects/cas
-Maintained fork:
-https://github.com/maslinda788/maslinda-laravel-cas
+- **Original project:** [subfission/cas](https://github.com/subfission/cas)
+- **phpCAS:** [Apereo CAS](https://www.apereo.org/projects/cas)
+- **Maintained fork:** [maslinda788/maslinda-laravel-cas](https://github.com/maslinda788/maslinda-laravel-cas)
