@@ -1,54 +1,210 @@
-# Repository Archival Notice – Feb 2025
-As of June 2024, the apereo/phpCAS repository is no longer actively maintained or updated and we have seen no progress on finding new maintainers. As a result, this codebase remains in a stagnant state with end-of-life (EOL) dependencies. To mitigate security risks for new projects, this repository is now scheduled for immediate archival.
+# Laravel CAS – Laravel 12 Compatible Fork
 
-We strongly recommend exploring alternative CAS solutions for future development.
+This repository is a maintained fork of the original `subfission/cas` package,
+updated to support **Laravel 12** and **PHP 8.3+**.
 
-- IT
+⚠️ **Important Note**  
+The upstream `apereo/phpCAS` project is no longer actively maintained.  
+This fork focuses on **compatibility**, **security hardening**, and **support for modern Laravel versions**
+while still allowing systems that depend on CAS/SSO to continue operating safely.
 
---- 
+Maintainer: maslinda788
 
-# CAS
-Simple CAS Authentication for Laravel 6-11.x.
+---
 
-This version of CAS, or Central Authentication Service, is designed to integrate with Laravel 6-11 projects that need to implement SSO.  
-Older version of Laravel may work, but are untested. This package was built for my necessity but can be easily used for anyone requiring CAS/SAML SSO in Laravel 6+.  This package is different in mindset as the goal in this project is to be as minimal as possible while offering as much flexibility as needed.
+## ✅ Supported Versions
 
-This package offers and abstraction of [Apereo CAS](https://www.apereo.org/projects/cas) (phpCAS), a cross platform and open-source *CAS client* and *server* provider.  Be sure to check them out if you intend to implement an SSO service other than AD.
+| Component  | Version |
+|----------|--------|
+| Laravel | 9.x – 12.x |
+| PHP | 8.0 – 8.3+ |
+| OS | CentOS 9, Ubuntu 22+ |
+| SSO | Apereo CAS |
 
-Check out the [wiki](https://github.com/subfission/cas/wiki) for further details.
+---
 
-## ChangeLog
+## ✅ Laravel 12 Important Notes
 
-### Release 5.0.0
+Laravel 12 introduces structural changes:
 
-* Support added for Laravel 11.x
-* Added phpCAS log control
-* Refactor internal design to support tests
-* Add GitHub actions to run tests and linting
+- ✅ No more `Kernel.php` (HTTP & Console)
+- ✅ Middleware must be registered in `bootstrap/app.php`
+- ✅ Service Providers must be registered in `bootstrap/providers.php`
+- ✅ Scheduled commands moved to `routes/console.php`
 
-### Release 4 and earlier
+This package has been updated to be **fully compatible with Laravel 12’s new structure.**
 
-* Support added for Laravel 10.x
-* Dropped support for phpCAS <1.6.0 (dependency vulnerability)
-* Support added for Laravel 9.x
-* Support added for Laravel 8.x
-* Support added for Laravel 7.x
-* Updated for Laravel 6.x
-* Dropped support for PHP 5.x
-* Laravel 5.5 Package Discovery support
-* CAS logout method supports redirection service as a secondary argument
-* Supports additional CAS versions, including version 1,2,3
-* Supports direct phpCAS calls for heavily customized CAS configurations
-* Supports logon with custom URL redirects
-* Supports logoff with redirect callbacks
-* Updated to work with Laravel 5.2 (backwards compatible)
-* Uses the latest phpCAS
-* Supports verbose logging
-* Session handling has been removed from CAS Manager and is moved strictly into the middleware
-* You can now leverage the CAS sessions instead of relying on Laravel sessions
-* More security fixes
-* Cleaner codebase
-* Backwards compatible (for the most part)
-* More configuration options in the config file available
-* Masquerading as a user now supported
-* Tested and working with PHP 7.x
+---
+
+## 📦 Installation
+
+### Option 1 – Public Package
+
+```bash
+composer require maslinda788/maslinda-laravel-cas
+
+Option 2 – Using VCS Repository
+
+Add this to your composer.json:
+
+"repositories": [
+  {
+    "type": "vcs",
+    "url": "https://github.com/maslinda788/maslinda-laravel-cas"
+  }
+]
+
+Then run:
+
+composer require maslinda788/maslinda-laravel-cas:dev-main
+
+Publish config:
+php artisan vendor:publish --tag=cas
+
+📁 Laravel 12 Registration
+1. Register Service Provider
+
+Add in:
+
+bootstrap/providers.php
+return [
+    Subfission\Cas\CasServiceProvider::class,
+];
+2. Add Facade Alias (Optional)
+
+In app/Providers/AppServiceProvider.php:
+
+use Illuminate\Foundation\AliasLoader;
+
+public function register(): void
+{
+    $this->app->booting(function () {
+        $loader = AliasLoader::getInstance();
+        $loader->alias('Cas', \Subfission\Cas\Facades\Cas::class);
+    });
+}
+
+This allows usage like:
+Cas::authenticate();
+
+⚙️ Configuration
+
+After publishing config, edit:
+config/cas.php
+
+Example:
+return [
+    'server' => [
+        'host' => 'cas.example.com',
+        'port' => 443,
+        'uri'  => '/cas',
+    ],
+
+    'version' => '3.0',
+
+    'cert' => storage_path('certs/cas.pem'),
+
+    'validate' => true,
+
+    'login_url'  => null,
+    'logout_url' => null,
+];
+
+🚀 Example Usage
+use Cas;
+
+Route::get('/login/cas', function () {
+    return Cas::authenticate();
+});
+
+Route::get('/logout/cas', function () {
+    return Cas::logout();
+});
+
+Route::get('/profile', function () {
+    if (Cas::isAuthenticated()) {
+        return Cas::user();
+    }
+
+    return redirect('/login/cas');
+});
+
+
+🔐 Security & Production Notes
+
+✅ Set APP_ENV=production
+
+✅ Enable HTTPS
+
+✅ Secure cookie settings in php.ini:
+session.cookie_secure = On
+session.cookie_samesite = None
+
+✅ Disable debug mode in production
+
+✅ Enable CSRF protection
+
+✅ Protect internal routes with middleware
+
+✅ Use firewall / WAF if available
+
+🧪 Pentest Notes
+
+This fork has been updated with:
+
+Safe session handling
+
+Compatibility with CSP header
+
+Secure cookies
+
+CSRF protection
+
+Laravel 12 middleware structure
+
+⚠️ Final security depends on:
+
+CAS server configuration
+
+Proper HTTPS & certificate verification
+
+Firewall & infrastructure security
+
+📝 Changelog
+v6.0.0 – Laravel 12 Fork
+
+✅ Added Laravel 12 compatibility
+
+✅ Updated for PHP 8.3+
+
+✅ Removed Kernel.php dependencies
+
+✅ New bootstrap architecture support
+
+✅ Improved session handling
+
+✅ CSP ready
+
+✅ Tested on CentOS 9
+
+✅ Production & audit-ready
+
+v5.0.0 (Original)
+
+Added Laravel 11 support
+
+Added phpCAS log control
+
+Refactored internal design
+
+Added GitHub Actions for testing
+
+📚 Credits
+
+Original project:
+https://github.com/subfission/cas
+
+phpCAS:
+https://www.apereo.org/projects/cas
+Maintained fork:
+https://github.com/maslinda788/maslinda-laravel-cas
