@@ -17,9 +17,10 @@ Maintainer: maslinda788
 | Component  | Version |
 |----------|--------|
 | Laravel | 9.x – 12.x |
-| PHP | 8.0 – 8.3+ |
+| PHP | 8.3+ |
 | OS | CentOS 9, Ubuntu 22+ |
 | SSO | Apereo CAS |
+| Package | `v1.0.1-laravel12` (latest) |
 
 ---
 
@@ -38,10 +39,10 @@ This package has been updated to be **fully compatible with Laravel 12’s new s
 
 ## 📦 Installation
 
-### Option 1 – Public Package
+### Option 1 – Public Package (Recommended)
 
 ```bash
-composer require maslinda788/maslinda-laravel-cas
+composer require maslinda788/maslinda-laravel-cas:v1.0.1-laravel12
 ```
 
 ### Option 2 – Using VCS Repository
@@ -66,7 +67,7 @@ composer require maslinda788/maslinda-laravel-cas:dev-main
 ### Publish Configuration
 
 ```bash
-php artisan vendor:publish --tag=cas
+php artisan vendor:publish --tag=cas-config
 ```
 
 ## 📁 Laravel 12 Registration
@@ -82,7 +83,37 @@ return [
 ];
 ```
 
-### 2. Add Facade Alias (Optional)
+> Laravel may also auto-discover this provider via `composer.json`. Manual registration in
+> `bootstrap/providers.php` is recommended for Laravel 12 apps.
+
+### 2. Register Middleware Aliases
+
+Add in `bootstrap/app.php`:
+
+```php
+use Illuminate\Foundation\Configuration\Middleware;
+
+return Application::configure(basePath: dirname(__DIR__))
+    // ...
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'cas.auth' => \Subfission\Cas\Middleware\CASAuth::class,
+            'cas.guest' => \Subfission\Cas\Middleware\RedirectCASAuthenticated::class,
+        ]);
+    })
+    // ...
+    ->create();
+```
+
+Example route usage:
+
+```php
+Route::middleware('cas.auth')->group(function () {
+    Route::get('/dashboard', fn () => view('dashboard'));
+});
+```
+
+### 3. Add Facade Alias (Optional)
 
 In `app/Providers/AppServiceProvider.php`:
 
@@ -182,18 +213,24 @@ This fork has been updated with:
 
 ## 📝 Changelog
 
-### v6.0.0 – Laravel 12 Fork
+### v1.0.1-laravel12
 
-- ✅ Added Laravel 12 compatibility
+- ✅ Clean `composer audit` (updated dev dependencies)
+- ✅ CI tests on PHP 8.3 with PHPUnit 11
+- ✅ Removed unused `orchestra/testbench` and `pestphp/pest` dev dependencies
+- ✅ Fixed README publish tag and middleware registration docs
+
+### v1.0.0-laravel12
+
+- ✅ Initial Laravel 12 compatible release
 - ✅ Updated for PHP 8.3+
 - ✅ Removed Kernel.php dependencies
-- ✅ New bootstrap architecture support
+- ✅ New bootstrap architecture support (`bootstrap/providers.php`)
 - ✅ Improved session handling
 - ✅ CSP ready
 - ✅ Tested on CentOS 9
-- ✅ Production & audit-ready
 
-### v5.0.0 (Original)
+### v5.0.0 (Original upstream)
 
 - Added Laravel 11 support
 - Added phpCAS log control

@@ -8,13 +8,13 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.4, 8.2]
+        php: ['8.3']
 
-    name: PHP${{ matrix.php }}
+    name: PHP ${{ matrix.php }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -26,6 +26,7 @@ jobs:
         id: composer-cache
         run: |
           echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
       - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
@@ -33,10 +34,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
             ${{ runner.os }}-composer-
+
       - name: Install dependencies
         run: |
-          composer install --prefer-dist --no-interaction --no-suggest
+          composer install --prefer-dist --no-interaction
           phive --no-progress install --trust-gpg-keys 4AA394086372C20A,CF1A108D0E7AE720,E82B2FB314E9906E
+
       - name: Execute checks
         run: |
           tools/php-cs-fixer fix -v --dry-run --stop-on-violation --using-cache=no

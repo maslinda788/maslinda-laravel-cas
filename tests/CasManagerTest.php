@@ -59,7 +59,7 @@ class CasManagerTest extends TestCase
         $this->makeCasManager(['cas_verbose_errors' => $verbose]);
     }
 
-    public function setVerboseChecks(): array
+    public static function setVerboseChecks(): array
     {
         return [
             'verbose' => [true],
@@ -89,7 +89,7 @@ class CasManagerTest extends TestCase
         $this->makeCasManager();
     }
 
-    public function setUpSessionChecks(): array
+    public static function setUpSessionChecks(): array
     {
         return [
             'headers not sent, no session id' => [false, '', true],
@@ -154,7 +154,7 @@ class CasManagerTest extends TestCase
         $this->makeCasManager($config);
     }
 
-    public function configureCasChecks(): array
+    public static function configureCasChecks(): array
     {
         return [
             'client' => [false, '2.0'],
@@ -233,7 +233,7 @@ class CasManagerTest extends TestCase
         $this->makeCasManager($config);
     }
 
-    public function casValidationChecks(): array
+    public static function casValidationChecks(): array
     {
         return [
             'no validation' => [null, false],
@@ -285,7 +285,7 @@ class CasManagerTest extends TestCase
         $this->makeCasManager($config);
     }
 
-    public function fixedServiceUrlChecks(): array
+    public static function fixedServiceUrlChecks(): array
     {
         return [
             'no url' => [false],
@@ -307,7 +307,7 @@ class CasManagerTest extends TestCase
         $this->assertEquals(!empty($masquerade), $manager->isMasquerading());
     }
 
-    public function masqueradeChecks(): array
+    public static function masqueradeChecks(): array
     {
         return [
             'masquerade' => ['bob'],
@@ -481,7 +481,7 @@ class CasManagerTest extends TestCase
         $manager->logout($url, $service);
     }
 
-    public function logoutParameterChecks(): array
+    public static function logoutParameterChecks(): array
     {
         return [
             'url' => ['https://example.com', ''],
@@ -549,7 +549,7 @@ class CasManagerTest extends TestCase
         $this->assertEquals($authenticated, $manager->checkAuthentication());
     }
 
-    public function authenticatedChecks(): array
+    public static function authenticatedChecks(): array
     {
         return [
             'is authenticated' => [true],
