@@ -20,7 +20,7 @@ Maintainer: maslinda788
 | PHP | 8.3+ |
 | OS | CentOS 9, Ubuntu 22+ |
 | SSO | Apereo CAS |
-| Package | `v1.0.1-laravel12` (latest) |
+| Package | `1.0.1` (latest) |
 
 ---
 
@@ -42,7 +42,7 @@ This package has been updated to be **fully compatible with Laravel 12’s new s
 ### Option 1 – Public Package (Recommended)
 
 ```bash
-composer require maslinda788/maslinda-laravel-cas:v1.0.1-laravel12
+composer require maslinda788/maslinda-laravel-cas:1.0.1
 ```
 
 ### Option 2 – Using VCS Repository
@@ -213,14 +213,15 @@ This fork has been updated with:
 
 ## 📝 Changelog
 
-### v1.0.1-laravel12
+### v1.0.1
 
 - ✅ Clean `composer audit` (updated dev dependencies)
 - ✅ CI tests on PHP 8.3 with PHPUnit 11
 - ✅ Removed unused `orchestra/testbench` and `pestphp/pest` dev dependencies
 - ✅ Fixed README publish tag and middleware registration docs
+- ✅ Retagged as `v1.0.1` for Composer semver compatibility
 
-### v1.0.0-laravel12
+### v1.0.0
 
 - ✅ Initial Laravel 12 compatible release
 - ✅ Updated for PHP 8.3+
