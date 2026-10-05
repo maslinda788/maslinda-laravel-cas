@@ -4,6 +4,7 @@ namespace Subfission\Cas\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 
 class RedirectCASAuthenticated
 {
@@ -19,11 +20,11 @@ class RedirectCASAuthenticated
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Request  $request
+     * @param  Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         if ($this->cas->checkAuthentication()) {
             return redirect(config('cas.cas_redirect_path'));

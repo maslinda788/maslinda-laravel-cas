@@ -1,6 +1,6 @@
 {
   "name": "maslinda788/maslinda-laravel-cas",
-  "description": "Laravel 12 compatible CAS authentication (based on subfission/cas)",
+  "description": "Laravel 12 and 13 compatible CAS authentication (based on subfission/cas)",
   "keywords": [
     "CAS",
     "phpCAS",
@@ -12,7 +12,8 @@
     "laravel 9",
     "laravel 10",
     "laravel 11",
-    "laravel 12"
+    "laravel 12",
+    "laravel 13"
   ],
   "license": "MIT",
   "authors": [
@@ -23,12 +24,13 @@
   ],
   "require": {
     "php": "^8.3",
-    "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
+    "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
     "apereo/phpcas": "^1.6",
     "monolog/monolog": "^2.0|^3.0"
   },
   "require-dev": {
     "fakerphp/faker": "^1.23",
+    "orchestra/testbench": "^10.6|^11.0",
     "phpunit/phpunit": "^11.5.50"
   },
   "autoload": {
@@ -58,5 +60,8 @@
   },
   "config": {
     "sort-packages": true
+  },
+  "scripts": {
+    "test": "phpunit --configuration phpunit.xml.dist"
   }
 }

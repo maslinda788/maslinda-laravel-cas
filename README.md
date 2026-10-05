@@ -1,7 +1,7 @@
-# Laravel CAS – Laravel 12 Compatible Fork
+# Laravel CAS – Laravel 12 and 13 Compatible Fork
 
 This repository is a maintained fork of the original `subfission/cas` package,
-updated to support **Laravel 12** and **PHP 8.3+**.
+updated to support **Laravel 12**, **Laravel 13**, and **PHP 8.3+**.
 
 ⚠️ **Important Note**  
 The upstream `apereo/phpCAS` project is no longer actively maintained.  
@@ -16,24 +16,27 @@ Maintainer: maslinda788
 
 | Component  | Version |
 |----------|--------|
-| Laravel | 9.x – 12.x |
+| Laravel | 12.x – 13.x (9.x – 11.x still accepted) |
 | PHP | 8.3+ |
 | OS | CentOS 9, Ubuntu 22+ |
 | SSO | Apereo CAS |
-| Package | `1.0.1` (latest) |
+| Package | Laravel 12 and 13 compatible |
 
 ---
 
-## ✅ Laravel 12 Important Notes
+## ✅ Laravel 12 and 13 Important Notes
 
-Laravel 12 introduces structural changes:
+Laravel 12 and Laravel 13 share the same application skeleton:
 
 - ✅ No more `Kernel.php` (HTTP & Console)
 - ✅ Middleware must be registered in `bootstrap/app.php`
 - ✅ Service Providers must be registered in `bootstrap/providers.php`
 - ✅ Scheduled commands moved to `routes/console.php`
 
-This package has been updated to be **fully compatible with Laravel 12’s new structure.**
+This package is compatible with that structure on **Laravel 12 and Laravel 13**.
+Laravel 13 keeps the same provider and middleware registration. Its main
+application-level change for security middleware is the CSRF class rename to
+`PreventRequestForgery`; this package does not reference the old class.
 
 ---
 
@@ -42,8 +45,11 @@ This package has been updated to be **fully compatible with Laravel 12’s new s
 ### Option 1 – Public Package (Recommended)
 
 ```bash
-composer require maslinda788/maslinda-laravel-cas:1.0.1
+composer require maslinda788/maslinda-laravel-cas
 ```
+
+Laravel 13 support is in the current codebase. Publish a new tag before relying on
+Packagist; `1.0.1` is the previous Laravel 12 release. Until that tag exists, use Option 2.
 
 ### Option 2 – Using VCS Repository
 
@@ -70,7 +76,7 @@ composer require maslinda788/maslinda-laravel-cas:dev-main
 php artisan vendor:publish --tag=cas-config
 ```
 
-## 📁 Laravel 12 Registration
+## 📁 Laravel 12 and 13 Registration
 
 ### 1. Register Service Provider
 
@@ -84,7 +90,7 @@ return [
 ```
 
 > Laravel may also auto-discover this provider via `composer.json`. Manual registration in
-> `bootstrap/providers.php` is recommended for Laravel 12 apps.
+> `bootstrap/providers.php` is recommended for Laravel 12 and 13 apps.
 
 ### 2. Register Middleware Aliases
 
@@ -203,7 +209,7 @@ This fork has been updated with:
 - ✅ Compatibility with CSP header
 - ✅ Secure cookies
 - ✅ CSRF protection
-- ✅ Laravel 12 middleware structure
+- ✅ Laravel 12 and 13 middleware structure
 
 ⚠️ **Final security depends on:**
 
@@ -212,6 +218,13 @@ This fork has been updated with:
 - Firewall & infrastructure security
 
 ## 📝 Changelog
+
+### Laravel 13 support
+
+- ✅ `illuminate/support` allows `^13.0` alongside Laravel 12
+- ✅ Nullable parameters declared explicitly for PHP 8.4 and 8.5
+- ✅ Orchestra Testbench coverage for the service provider, facade, helper, config publishing, and middleware
+- ✅ CI matrix runs the suite on Laravel 12 and Laravel 13
 
 ### v1.0.1
 

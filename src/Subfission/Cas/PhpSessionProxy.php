@@ -14,7 +14,7 @@ class PhpSessionProxy
         return session_id();
     }
 
-    public function sessionSetName(string $name = null)
+    public function sessionSetName(?string $name = null)
     {
         return session_name($name);
     }

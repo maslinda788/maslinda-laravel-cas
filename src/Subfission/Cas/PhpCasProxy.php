@@ -63,7 +63,7 @@ class PhpCasProxy
         // deprecated
     }
 
-    public function setLogger(LoggerInterface $logger = null): void
+    public function setLogger(?LoggerInterface $logger = null): void
     {
         phpCAS::setLogger($logger);
     }

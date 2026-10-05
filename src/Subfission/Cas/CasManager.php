@@ -49,10 +49,10 @@ class CasManager
      * @param PhpSessionProxy|null $sessionProxy
      */
     public function __construct(
-        array           $config,
-        PhpCasProxy     $casProxy = null,
-        PhpSessionProxy $sessionProxy = null,
-        LogoutStrategy  $logoutStrategy = null
+        array            $config,
+        ?PhpCasProxy     $casProxy = null,
+        ?PhpSessionProxy $sessionProxy = null,
+        ?LogoutStrategy  $logoutStrategy = null
     ) {
         $this->casProxy = $casProxy ?? new PhpCasProxy();
         $this->sessionProxy = $sessionProxy ?? new PhpSessionProxy();
