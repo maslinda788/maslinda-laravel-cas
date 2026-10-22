@@ -20,7 +20,7 @@ Maintainer: maslinda788
 | PHP | 8.3+ |
 | OS | CentOS 9, Ubuntu 22+ |
 | SSO | Apereo CAS |
-| Package | Laravel 12 and 13 compatible |
+| Package | `1.1.0` (latest) |
 
 ---
 
@@ -45,11 +45,8 @@ application-level change for security middleware is the CSRF class rename to
 ### Option 1 – Public Package (Recommended)
 
 ```bash
-composer require maslinda788/maslinda-laravel-cas
+composer require maslinda788/maslinda-laravel-cas:1.1.0
 ```
-
-Laravel 13 support is in the current codebase. Publish a new tag before relying on
-Packagist; `1.0.1` is the previous Laravel 12 release. Until that tag exists, use Option 2.
 
 ### Option 2 – Using VCS Repository
 
@@ -219,7 +216,7 @@ This fork has been updated with:
 
 ## 📝 Changelog
 
-### Laravel 13 support
+### v1.1.0
 
 - ✅ `illuminate/support` allows `^13.0` alongside Laravel 12
 - ✅ Nullable parameters declared explicitly for PHP 8.4 and 8.5
